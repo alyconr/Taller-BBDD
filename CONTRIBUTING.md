@@ -54,13 +54,13 @@ cd ../ui
 npm install
 ```
 
-o simplemente ejecutar `make install`
+o simplemente ejecutar `make install-dependencies`
 
 ### Ejecución Makefile
 
 Para la ejecución, usamos un **Makefile** con las instrucciones para las dos infraestructuras. Aquí puedes consultar el uso de los [Phony Targets](https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html). Con el fichero Makefile puedes:
 
-1. Instalar las dependencias con `make install`
+1. Instalar las dependencias con `make install-dependencies`
 
 2. Para añadir la información a la bbdd:
    1. **linux** o **macOS**: Ejecuta `make dev-bbdd-start-populate`
@@ -69,3 +69,5 @@ Para la ejecución, usamos un **Makefile** con las instrucciones para las dos in
 3. Para ejecutar la app:
    1. **linux** o **macOS**: ejecuta `make dev-start`
    2. **Windows**: Inicia primero **mongoDB** y luego ejectua `make dev-api` en una consola y en otra `make dev-ui`
+
+4. La contraseña actual es **patata** que corresponde con el hash de bcrypt `$2b$10$YZ1W1tjiKP3g4j8mGzJAhelx0nlQ4otJIefWXGco8.bk6SOxaunhy`, para cambiar esta contraseña ejecuta `make generate-password -e USERNAME=[CORREO] -e PASS=[CONTRASEÑA]`

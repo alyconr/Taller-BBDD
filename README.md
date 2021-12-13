@@ -39,6 +39,7 @@ Este proyecto cuenta con las siguientes tecnologías, que se encuentran dentro d
 * [Swagger](https://app.swaggerhub.com/apis/lucferbux/ThreePoints/1.0.0)
 * [Express Router](https://expressjs.com/en/guide/routing.html)
 * [DotEnv](https://github.com/motdotla/dotenv)
+* [Joi](https://github.com/sideway/joi)
 
 ### BBDD
 

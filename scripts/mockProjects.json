@@ -102,6 +102,14 @@
         "link": "https://github.com/motdotla/dotenv#readme",
         "tag": "Javascript, Env Variable",
         "timestamp": 765817712012
+    },
+    {
+        "title": "Joi",
+        "description": "Validador de datos y esquemas para JavaScript",
+        "version": "17.5.0",
+        "link": "https://github.com/sideway/joi",
+        "tag": "Javascript, Schema, Validator",
+        "timestamp": 765817712018
     }
     
 ]

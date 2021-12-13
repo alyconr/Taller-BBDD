@@ -1,3 +1,6 @@
+USER  ?= user@gmail.com
+PASS  ?= patata
+
 # Init Scripts
 .PHONY: dev-api
 dev-api:
@@ -32,6 +35,9 @@ mongo-export:
 .PHONY: dev-bbdd-start-populate
 dev-bbdd-start-populate: mongo-start dev-populate-data
 
+.PHONY: generate-password
+generate-password:
+	cd scripts && ./generatepass.sh $(USER) $(PASS)
 
 # Installation scripst
 .PHONY: install-ui
