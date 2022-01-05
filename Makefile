@@ -1,5 +1,6 @@
 USER  ?= user@gmail.com
 PASS  ?= patata
+MONGODB_ATLAS ?= mongodb+srv://<username>:<password>@<cluster>.mongodb.net
 
 # Init Scripts
 .PHONY: dev-api
@@ -38,6 +39,10 @@ dev-bbdd-start-populate: mongo-start dev-populate-data
 .PHONY: generate-password
 generate-password:
 	cd scripts && ./generatepass.sh $(USER) $(PASS)
+
+.PHONY: import-atlass
+import-atlass:
+	cd scripts && ./mongoimportatlass.sh $(MONGODB_ATLAS)
 
 # Installation scripst
 .PHONY: install-ui
