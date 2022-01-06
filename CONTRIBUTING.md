@@ -71,3 +71,15 @@ Para la ejecución, usamos un **Makefile** con las instrucciones para las dos in
    2. **Windows**: Inicia primero **mongoDB** y luego ejectua `make dev-api` en una consola y en otra `make dev-ui`
 
 4. La contraseña actual es **patata** que corresponde con el hash de bcrypt `$2b$10$YZ1W1tjiKP3g4j8mGzJAhelx0nlQ4otJIefWXGco8.bk6SOxaunhy`, para cambiar esta contraseña ejecuta `make generate-password -e USERNAME=[CORREO] -e PASS=[CONTRASEÑA]`
+
+### Scripts BBDD
+
+Para inicializar el proyecto con datos iniciales, utilizamos la importación de estrucutras **json** dentro de **MongoDB**. Para ello usamos el comando `mongoimport --jsonArray` con el que importaremos los json creados. El código usado es el siguiente.
+
+```bash
+mongoimport --jsonArray --db portfolio_db --collection users --file mockUsername.json
+mongoimport --jsonArray --db portfolio_db --collection profile --file mockProfile.json
+mongoimport --jsonArray --db portfolio_db --collection projects --file mockProjects.json
+```
+
+Como podéis comprobar, los ficheros `mockProfile.json`, `mockProjects.json`y `mockUsername.json`. Cambiando los datos allí, e importando los nuevos ficheros, tendremos los cambios reflejados en nuestro documento.
