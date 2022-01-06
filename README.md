@@ -1,6 +1,6 @@
 # Proyecto Web - Backend + Front + BBDD
 
-![Frontend](./doc/bbdd.svg)
+![Frontend](./doc/BBDD.svg)
 
 ## Documentación
 
