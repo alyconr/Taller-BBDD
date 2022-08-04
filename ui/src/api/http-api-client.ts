@@ -146,7 +146,40 @@ export default class HttpApiClient implements ApiClient {
 
     // TODO: 1) Add updateProject using PUT method
 
+    async updateProject(project: Project): Promise<ProjectResponse> {
+      const response = await fetch(this.baseUrl + "/v1/projects", {
+        method: "PUT",
+        headers: {
+          Authorization: getAuthorizationHeader(),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(project),
+      });
+      if (!response.ok) {
+        throw await createApiError(response);
+      }
+      return response.json();
+    }
+
     // TODO: 1) Add updateProject using DELETE method
+
+    async deleteProject(projectId: string): Promise<ProjectResponse> {
+      const response = await fetch(this.baseUrl + "/v1/projects", {
+        method: "DELETE",
+        headers: {
+          Authorization: getAuthorizationHeader(),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: projectId}),
+      });
+      console.log(response);
+      if (!response.ok) {
+        throw await createApiError(response);
+      }
+      return response.json();
+    }
 
   
 }

@@ -64,6 +64,26 @@ export async function create(req: Request, res: Response, next: NextFunction): P
  * @param {NextFunction} next
  * @returns {Promise < void >}
  */
+ export async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        await ProjectsService.remove(req.body._id);
+        delete req.body._id;
+        const aboutMe: IProjectsModel = await ProjectsService.insert(req.body);
+
+        res.status(201).json(aboutMe);
+    } catch (error) {
+        next(new HttpError(error.message.status, error.message));
+    }
+}
+
+
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @returns {Promise < void >}
+ */
 export async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const aboutMe: IProjectsModel = await ProjectsService.remove(req.body.id);

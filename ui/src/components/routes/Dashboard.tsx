@@ -9,6 +9,8 @@ import ProjectCard from "../cards/ProjectCard";
 import { themes } from "../../styles/ColorStyles";
 import { MediumText } from "../../styles/TextStyles";
 import createApiClient from "../../api/api-client-factory";
+import useProject from '../../hooks/useProject';
+import { useHistory } from 'react-router-dom';
 
 
 interface Response {
@@ -23,6 +25,9 @@ const Dashboard = () => {
   
   const { addNotification, removeLastNotification } = useApp();
   // TODO: 3) Llama al hook useProject 
+
+  const { setProjectOrUndefined } = useProject();
+  const history = useHistory();
 
   useEffect(() => {
     async function retrieveInfo() {
@@ -58,9 +63,30 @@ const Dashboard = () => {
   // HINT: el primer argumento debería ser element: React.MouseEvent<HTMLElement> para así llara a element.preventDefault() y element.stopPropagation()
   // HINT: Además de eliminar el proyecto, hay que refrescar la interfaz de React 
 
+  async function deleteProject(element: React.MouseEvent<HTMLElement>, id: string) {
+    element.preventDefault()
+    element.stopPropagation()
+    const api = createApiClient();
+    try {
+      await api.deleteProject(id);
+      const projects: Project[] = await api.getProjects();
+      const aboutme: AboutMe = await api.getAboutMe();
+      setResponse({ aboutme, projects });
+    } catch (e) {
+      console.log("Error deleting project", e);
+    }
+  }   
+
   // TODO: 3) Crea la función deleteProject
   // HINT: el primer argumento debería ser element: React.MouseEvent<HTMLElement> para así llara a element.preventDefault() y element.stopPropagation()
   // HINT: Además de añadir el proyecto al contexto, habrá que navegar a /admin de forma programática
+
+  function updateProject(element: React.MouseEvent<HTMLElement>, project: Project) {
+    element.preventDefault()
+    element.stopPropagation()
+    setProjectOrUndefined(project);
+    history.push("/admin");
+  }   
  
 
   return (
@@ -74,7 +100,7 @@ const Dashboard = () => {
             <ProjectWrapper>
               {response?.projects?.map((project, index) => (
                 // TODO: 3, Actualiza project card para añadir los props
-                <ProjectCard project={project} key={index} />
+                <ProjectCard project={project} key={index} closeButton={(e, id) => deleteProject(e, id)} updateButton={(e, id) => updateProject(e, id)} />
               ))}
             </ProjectWrapper>
           </ResponseWrapper>

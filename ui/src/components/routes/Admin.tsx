@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import createApiClient from "../../api/api-client-factory";
 import useApp from "../../hooks/useApp";
+import useProject from "../../hooks/useProject";
 import { Project } from "../../model/project";
 import { themes } from "../../styles/ColorStyles";
 import { Caption, H1 } from "../../styles/TextStyles";
@@ -21,16 +22,22 @@ const Admin = () => {
   const { addNotification, removeLastNotification } = useApp();
   // TODO: 4) Call the useProject() hook
 
+  const { project, setProjectOrUndefined } = useProject();
+
   useEffect(() => {
-    // TODO: 4) Check if there's a project in context and fill the form (you can create a function for that)
+    // TODO: 5) Check if there's a project in context and fill the form (you can create a function for that)
+    if (project) {
+      fillUpForm(project);
+    }
 
     return () => {
-      // TODO: 4) Clean up the project context when the component is unmounted
+      // TODO: 5) Clean up the project context when the component is unmounted
+      setProjectOrUndefined(undefined);
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
     };
-  }, [timeoutId]);
+  }, [timeoutId, setProjectOrUndefined, project]);
 
   async function postProject(event: FormEvent<HTMLFormElement>) {
     dismissError();
@@ -41,34 +48,55 @@ const Admin = () => {
     }
     const api = createApiClient();
     try {
-      // TODO: 4) Modify the project creation adding the _id and timestamp if it's an update
+      // TODO: 5) Modify the project creation adding the _id and timestamp if it's an update
       const projectCreation: Project = {
-        _id: undefined,
+        _id: project ? project._id : undefined,
         title: title,
         description: description,
         link: link,
         tag: tags,
         version: version,
-        timestamp: Date.now(),
+        timestamp: project ? project.date : Date.now(),
       };
       addNotification("Posting...");
-      // TODO: 4) call update if it's an update or post if its a creation
-      await api.postProject(projectCreation);
-      setSuccessMsg(t("admin.suc_network"));
+      // TODO: 5) call update if it's an update or post if its a creation
+      if (project) {
+        await api.updateProject(projectCreation);
+        setSuccessMsg(t("admin.suc_network_update"));
+      } else {
+        await api.postProject(projectCreation);
+        setSuccessMsg(t("admin.suc_network"));
+      }
     } catch (e) {
       setErrorMsg(t("admin.err_network"));
     } finally {
       removeLastNotification();
-      resetForm();
-      const timeOut = setTimeout(() => {
-        removeMessages()
+      // TODO: 5) Clean up the project context 
+      setProjectOrUndefined(undefined);
+      const timeout = setTimeout(() => {
+        resetMessages();
       }, 2000);
-      setTimeoutId(timeOut);
-      // TODO: 4) Clean up the project context 
+      setTimeoutId(timeout);
+      resetForm();
     }
   }
 
   // TODO: 4) Create a function to fill the form
+
+  function fillUpForm(project: Project) {
+    setErrorMsg("");
+    setSuccessMsg("");
+    setTitle(project.title);
+    setLink(project.link);
+    setDescription(project.description);
+    setTags(project.tag);
+    setVersion(project.version);
+  }
+
+  function resetMessages() {
+    setErrorMsg("");
+    setSuccessMsg("");
+  }
 
   function resetForm() {
     setTitle("");
@@ -78,11 +106,7 @@ const Admin = () => {
     setVersion("");
   }
 
-  function removeMessages() {
-    setErrorMsg("");
-    setSuccessMsg("");
-  }
-
+  
   function onChangeAnyInput() {
     setErrorMsg("");
   }
